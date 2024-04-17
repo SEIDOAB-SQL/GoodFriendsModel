@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GoodFriendsModel
 {
-	public class csAdress
-	{
+	public class csAdress : ISeed<csAdress>
+	{        
         public string StreetAdress { get; set; }
         public int ZipCode { get; set; }
         public string City { get; set; }
@@ -12,23 +12,22 @@ namespace GoodFriendsModel
 
         public override string ToString() => $"{StreetAdress}, {ZipCode} {City}, {Country}";
 
+        #region Random Seeding
+        public bool Seeded { get; set; } = false;
 
-        public static class Factory
+        public csAdress Seed(csSeedGenerator _seeder)
         {
-            public static csAdress CreateRandom()
+            var country = _seeder.Country;
+            return new csAdress
             {
-                var rnd = new csRandomData();
-                var country = rnd.Country;
-
-                return new csAdress
-                {
-                    StreetAdress = rnd.StreetAdress(country),
-                    ZipCode = rnd.ZipCode,
-                    City = rnd.City(country),
-                    Country = country,
-                };
-            }
+                StreetAdress = _seeder.StreetAddress(country),
+                ZipCode = _seeder.ZipCode,
+                City = _seeder.City(country),
+                Country = country,
+                Seeded = true
+            };
         }
+        #endregion
     }
 }
 

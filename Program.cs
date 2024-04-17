@@ -22,11 +22,13 @@ class Program
 
     private static List<csFriend> SeedModel()
     {
+        var _seeder = new csSeedGenerator();
+        
         //Create a list of friends
         var _goodfriends = new List<csFriend>();
         for (int c = 0; c < 20; c++)
         {
-            _goodfriends.Add(csFriend.Factory.CreateRandom());
+            _goodfriends.Add(new csFriend().Seed(_seeder));
         }
         return _goodfriends;
     }

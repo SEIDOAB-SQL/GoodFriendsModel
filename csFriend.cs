@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GoodFriendsModel
 {
-    public class csFriend
+    public class csFriend : ISeed<csFriend>
 	{
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -36,33 +36,33 @@ namespace GoodFriendsModel
             return sRet;
         }
 
-        public static class Factory
+        #region Random Seeding
+        public bool Seeded { get; set; } = false;
+
+        public csFriend Seed(csSeedGenerator _seeder)
         {
-            public static csFriend CreateRandom()
+            var fn = _seeder.FirstName;
+            var ln = _seeder.LastName;
+            var country = _seeder.Country;
+
+            //Create between 0 and 3 pets
+            var _pets = new List<csPet>();
+            for (int i = 0; i < _seeder.Next(0,4); i++)
             {
-                var rnd = new csRandomData();
-
-                var fn = rnd.FirstName;
-                var ln = rnd.LastName;
-                var country = rnd.Country;
-
-                //Create between 0 and 3 pets
-                var _pets = new List<csPet>();
-                for (int i = 0; i < rnd.Next(0,4); i++)
-                {
-                    _pets.Add(csPet.Factory.CreateRandom()); 
-                }
-
-                return new csFriend
-                {
-                    FirstName = fn,
-                    LastName = ln,
-                    Email = rnd.Email(fn, ln),
-                    Adress = (rnd.Bool) ?csAdress.Factory.CreateRandom() :null,
-                    Pets = (_pets.Count > 0) ? _pets : null  
-                };
+                _pets.Add(new csPet().Seed(_seeder)); 
             }
+
+            return new csFriend
+            {
+                FirstName = fn,
+                LastName = ln,
+                Email = _seeder.Email(fn, ln),
+                Adress = (_seeder.Bool) ? new csAdress().Seed(_seeder) :null,
+                Pets = (_pets.Count > 0) ? _pets : null , 
+                Seeded = true
+            };
         }
+        #endregion
     }
 }
 
