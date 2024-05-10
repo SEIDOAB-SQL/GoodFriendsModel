@@ -3,7 +3,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        var _modelList = SeedModel();
+        var _modelList = SeedModel(20);
         WriteModel(_modelList);
     }
 
@@ -25,13 +25,13 @@ class Program
         Console.WriteLine($"Last Friend: {_modelList.Last()}");
     }
 
-    private static List<csFriend> SeedModel()
+    private static List<csFriend> SeedModel(int nrItems)
     {
         var _seeder = new csSeedGenerator();
         
         //Create a list of friends
         var _goodfriends = new List<csFriend>();
-        for (int c = 0; c < 20; c++)
+        for (int c = 0; c < nrItems; c++)
         {
             _goodfriends.Add(new csFriend().Seed(_seeder));
         }
