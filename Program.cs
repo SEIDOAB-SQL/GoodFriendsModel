@@ -1,9 +1,11 @@
 ﻿namespace GoodFriendsModel;
 class Program
 {
+    const int nrItemsSeed = 50;
+    
     static void Main(string[] args)
     {
-        var _modelList = SeedModel(20);
+        var _modelList = SeedModel(nrItemsSeed);
         WriteModel(_modelList);
     }
 
